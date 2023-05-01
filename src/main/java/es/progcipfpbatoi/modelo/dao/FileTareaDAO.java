@@ -6,11 +6,9 @@ import es.progcipfpbatoi.modelo.dto.Categoria;
 import es.progcipfpbatoi.modelo.dto.Tarea;
 
 import java.io.*;
-import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
-import java.util.Arrays;
 
 public class FileTareaDAO implements TareaDAO{
 
@@ -122,8 +120,8 @@ public class FileTareaDAO implements TareaDAO{
         ArrayList<Tarea> tareas = findAll();
         try {
             File file = new File(DATABASE_FILE);
-            BufferedWriter bufferedWriter = new BufferedWriter(new FileWriter(file));
-            //Si no existe aun la tarea
+            boolean exists = file.exists();
+            BufferedWriter bufferedWriter = new BufferedWriter(new FileWriter(file, exists));
             boolean tareaActualizada = false;
             for (Tarea tareaItem: tareas) {
                 if (tareaItem.getDescripcion().equals(tarea.getDescripcion())) {
@@ -136,18 +134,44 @@ public class FileTareaDAO implements TareaDAO{
                     String lineaTareaItem = convertirAString(tareaItem);
                     bufferedWriter.newLine();
                     bufferedWriter.write(lineaTareaItem);
-
                 }
             }
             if (!tareaActualizada) {
                 String lineaTarea = convertirAString(tarea);
+                if (exists) {
+                    bufferedWriter.newLine();
+                }
                 bufferedWriter.write(lineaTarea);
-                bufferedWriter.newLine();
                 System.out.println("Tarea añadida");
             }
             bufferedWriter.close();
         } catch (IOException e) {
             System.out.println("Fichero no encontrado");
+        }
+        return true;
+    }
+
+    @Override
+    public boolean remove(int id) throws DatabaseErrorException, NotFoundException {
+        ArrayList<Tarea> tareas = findAll();
+        boolean tareaEliminada = false;
+        try {
+            BufferedWriter bufferedWriter = new BufferedWriter(new FileWriter(file));
+            for (Tarea tareaItem : tareas) {
+                if (tareaItem.getId() == id) {
+                    tareaEliminada = true;
+                } else {
+                    String lineaTareaItem = convertirAString(tareaItem);
+                    bufferedWriter.write(lineaTareaItem);
+                    bufferedWriter.newLine();
+                }
+            }
+            bufferedWriter.close();
+            if (!tareaEliminada) {
+                throw new NotFoundException("La tarea no se encuentra en la base de datos.");
+            }
+        } catch (IOException e) {
+            throw new DatabaseErrorException("Error al acceder al archivo de la base de datos de tareas: " + e.getMessage());
         }
         return true;
     }

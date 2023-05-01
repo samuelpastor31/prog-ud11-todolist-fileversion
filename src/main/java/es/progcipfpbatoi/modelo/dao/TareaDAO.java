@@ -34,4 +34,6 @@ public interface TareaDAO {
      * @throws DatabaseErrorException
      */
     boolean save(Tarea tarea) throws DatabaseErrorException;
+
+    boolean remove(int id) throws DatabaseErrorException, NotFoundException;
 }

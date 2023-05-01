@@ -1,5 +1,6 @@
 package es.progcipfpbatoi.modelo.dao;
 
+import es.progcipfpbatoi.exceptions.DatabaseErrorException;
 import es.progcipfpbatoi.exceptions.NotFoundException;
 import es.progcipfpbatoi.modelo.dto.Categoria;
 import es.progcipfpbatoi.modelo.dto.Tarea;
@@ -35,6 +36,18 @@ public class InMemoryTareaDAO implements TareaDAO {
         }
 
         this.tareas.set(indiceTarea, tarea);
+        return true;
+    }
+
+    @Override
+    public boolean remove(int id) throws DatabaseErrorException, NotFoundException {
+        Tarea tareaId = new Tarea(tareas.indexOf(id));
+        for (int i = 0; i < tareas.size() ; i++) {
+            if (tareas.get(i).equals(tareaId)){
+               tareas.remove(tareas.indexOf(i));
+                System.out.println("Eliminada");
+        }
+        }
         return true;
     }
 

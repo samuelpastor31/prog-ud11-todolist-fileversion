@@ -1,4 +1,12 @@
 4;sacar al perro;2023-04-29 11:52:14;false;HOGAR
-2;fifa con mi amigo;2023-01-13 20:10:00;false;JUGAR
-3;actividad 1 de entornos;2023-03-11 19:00:00;false;CLASE
-5;hola;2023-04-29 12:36:51;false;CLASE
+2;sacar al perro;2023-05-01 15:53:43;false;HOGAR
+4;sacar al perro;2023-04-29 11:52:14;false;HOGAR
+2;sacar al perro;2023-05-01 15:53:43;false;HOGAR
+3;si;2023-05-01 15:54:00;false;CLASE
+4;sacar al perro;2023-04-29 11:52:14;false;HOGAR
+4;sacar al perro;2023-04-29 11:52:14;false;HOGAR
+2;sacar al perro;2023-05-01 15:53:43;false;HOGAR
+4;sacar al perro;2023-04-29 11:52:14;false;HOGAR
+2;sacar al perro;2023-05-01 15:53:43;false;HOGAR
+3;si;2023-05-01 15:54:00;true;CLASE
+4;sacar al perro;2023-04-29 11:52:14;false;HOGAR
