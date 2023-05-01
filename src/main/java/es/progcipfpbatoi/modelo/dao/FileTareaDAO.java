@@ -152,7 +152,6 @@ public class FileTareaDAO implements TareaDAO{
             BufferedWriter bufferedWriter = new BufferedWriter(new FileWriter(file));
             for (Tarea tareaItem : tareas) {
                 if (tareaItem.getId() == id) {
-                    tareas.remove(tareaItem);
                     tareaEliminada = true;
                 } else {
                     String lineaTareaItem = convertirAString(tareaItem);
