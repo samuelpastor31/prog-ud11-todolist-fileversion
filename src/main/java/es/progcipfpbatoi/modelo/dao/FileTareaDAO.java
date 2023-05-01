@@ -168,10 +168,10 @@ public class FileTareaDAO implements TareaDAO{
             }
             bufferedWriter.close();
             if (!tareaEliminada) {
-                throw new NotFoundException("La tarea no se encuentra en la base de datos.");
+                throw new NotFoundException("La tarea no existe");
             }
         } catch (IOException e) {
-            throw new DatabaseErrorException("Error al acceder al archivo de la base de datos de tareas: " + e.getMessage());
+            throw new DatabaseErrorException("No se encuentra el archivo de la base de datos de tareas: " + e.getMessage());
         }
         return true;
     }
