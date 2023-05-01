@@ -116,37 +116,30 @@ public class FileTareaDAO implements TareaDAO{
     }
 
     @Override
-    public boolean save(Tarea tarea) {
+    public boolean save(Tarea tarea) throws IOException {
         ArrayList<Tarea> tareas = findAll();
-        try {
-            File file = new File(DATABASE_FILE);
-            boolean exists = file.exists();
-            BufferedWriter bufferedWriter = new BufferedWriter(new FileWriter(file, exists));
-            boolean tareaActualizada = false;
-            for (Tarea tareaItem: tareas) {
-                if (tareaItem.getDescripcion().equals(tarea.getDescripcion())) {
-                    String lineaTarea = convertirAString(tarea);
-                    bufferedWriter.newLine();
-                    bufferedWriter.write(lineaTarea);
-                    tareaActualizada = true;
-                    System.out.println("Tarea actualizada");
-                } else {
-                    String lineaTareaItem = convertirAString(tareaItem);
-                    bufferedWriter.newLine();
-                    bufferedWriter.write(lineaTareaItem);
-                }
+        boolean tareaActualizada = false;
+        for (int i = 0; i < tareas.size(); i++) {
+            Tarea tareaItem = tareas.get(i);
+            if (tareaItem.getDescripcion().equals(tarea.getDescripcion())) {
+                tareas.set(i, tarea);
+                tareaActualizada = true;
+                System.out.println("Tarea actualizada");
             }
-            if (!tareaActualizada) {
-                String lineaTarea = convertirAString(tarea);
-                if (exists) {
-                    bufferedWriter.newLine();
-                }
+        }
+        if (!tareaActualizada) {
+            tareas.add(tarea);
+            System.out.println("Tarea añadida");
+        }
+        try (BufferedWriter bufferedWriter = new BufferedWriter(new FileWriter(this.file))) {
+            for (Tarea tareaItem : tareas) {
+                String lineaTarea = convertirAString(tareaItem);
                 bufferedWriter.write(lineaTarea);
-                System.out.println("Tarea añadida");
+                bufferedWriter.newLine();
             }
-            bufferedWriter.close();
         } catch (IOException e) {
-            System.out.println("Fichero no encontrado");
+            e.printStackTrace();
+            throw new IOException("Error");
         }
         return true;
     }
@@ -159,6 +152,7 @@ public class FileTareaDAO implements TareaDAO{
             BufferedWriter bufferedWriter = new BufferedWriter(new FileWriter(file));
             for (Tarea tareaItem : tareas) {
                 if (tareaItem.getId() == id) {
+                    tareas.remove(tareaItem);
                     tareaEliminada = true;
                 } else {
                     String lineaTareaItem = convertirAString(tareaItem);
